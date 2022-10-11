@@ -1,10 +1,16 @@
 from flask import Flask, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
+from fastapi import FastAPI
+import sqlite3
+
 
 db = SQLAlchemy()
 app =  Flask('__name__',template_folder="templates")
 #Data base
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///livros.sqlite3"
+con = sqlite3.connect("instance/livros.sqlite3",check_same_thread=False)
+dbcursor = con.cursor()
+
 
 class Livros(db.Model):
     id = db.Column('id',db.Integer,primary_key=True,autoincrement=True)
@@ -56,8 +62,12 @@ def update(id):
         livro.autor = request.form["autor"]
         db.session.commit()
         return redirect(url_for("list"))
-    
 
+@app.route('/teste/<int:id>')
+def teste(id):
+    tudo = dbcursor.execute(f"SELECT * FROM Livros WHERE id={id}")
+    tudo = tudo.fetchall()
+    return f"{tudo}"
 
 with app.app_context():
     db.init_app(app)

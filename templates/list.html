@@ -106,10 +106,10 @@ body {
         <div class="form-group">
             {% for livro in livros %}
                 <ul class="list-group">
-                    <li class="list-group-item"><b>
-                        <a style="color: rgba(0, 0, 0, 0.3);" href="/{{livro.id}}">{{livro.id}} {{livro.titulo}} {{livro.autor}}</a>
-                    </b>
-                    <a style="color: red;"href="/delete/{{livro.id}}"><b>delete</b></a>
+					<li class="list-group-item"><b>
+                        <a href="/{{livro.id}}" style="color: black; font-size:15px;">ID {{livro.id}}</a><br> Titulo: {{livro.titulo}} <br> Autor: {{livro.autor}}
+                    </b><br>
+                    <a style="color: red;"href="/delete/{{livro.id}}"><b> -> X <- </b></a>
                     </li>
                             <a class ="btn btn-success" href="/update/{{livro.id}}"> Update</a>
                     <br>
