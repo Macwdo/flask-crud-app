@@ -67,7 +67,7 @@ def update(id):
 def teste(id):
     tudo = dbcursor.execute(f"SELECT * FROM Livros WHERE id={id}")
     tudo = tudo.fetchall()
-    return f"{tudo}"
+    return f"{tudo}a"
 
 with app.app_context():
     db.init_app(app)
