@@ -4,6 +4,7 @@ from fastapi import FastAPI
 import sqlite3
 
 
+api = FastAPI()
 db = SQLAlchemy()
 app =  Flask('__name__',template_folder="templates")
 #Data base
