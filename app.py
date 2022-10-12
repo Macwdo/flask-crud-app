@@ -4,6 +4,7 @@ from fastapi import FastAPI
 import sqlite3
 
 
+api = FastAPI()
 db = SQLAlchemy()
 app =  Flask('__name__',template_folder="templates")
 #Data base
@@ -63,11 +64,43 @@ def update(id):
         db.session.commit()
         return redirect(url_for("list"))
 
-@app.route('/teste/<int:id>')
-def teste(id):
-    tudo = dbcursor.execute(f"SELECT * FROM Livros WHERE id={id}")
-    tudo = tudo.fetchall()
-    return f"{tudo}"
+
+@api.get("/api")
+async def list_view_api():
+    dbcursor.execute(f"SELECT id, titulo, autor FROM Livros")
+    dados = []
+    resultado = dbcursor.fetchall()
+    for dado in resultado:
+        serializer = {
+            "id": dado[0],
+            "titulo": dado[1],
+            "autor": dado[2]
+        }
+        dados.append(serializer)
+    return dados
+
+@api.post("/api")
+async def list_view_api(titulo: str, autor:str):
+    dbcursor.execute(f"INSERT INTO Livros (titulo, autor) VALUES ({titulo},{autor})")
+    dados = []
+    resultado = dbcursor.fetchall()
+    for dado in resultado:
+        serializer = {
+            "id": dado[0],
+            "titulo": dado[1],
+            "autor": dado[2]
+        }
+        dados.append()
+
+@api.get("/api/{id}")
+async def view_api(id: int):
+    dbcursor.execute(f"SELECT id, titulo, autor FROM Livros WHERE id={id}")
+    dados = dbcursor.fetchone()
+    return {
+        'id':dados[0],
+        'titulo':dados[1],
+        'autor':dados[2]
+        }
 
 with app.app_context():
     db.init_app(app)
